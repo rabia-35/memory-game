@@ -9,16 +9,23 @@ let initialCard=[
     {"src":"./image/img-6.jpg", matched:false},
     {"src":"./image/img-7.jpg", matched:false},
     {"src":"./image/img-8.jpg", matched:false},
+    {"src":"./image/img-9.jpg", matched:false},
+    {"src":"./image/img-10.jpg", matched:false}
 ]
 const gameSlice=createSlice({
     name:"game",
     initialState:{
-        item:[...initialCard, ...initialCard],
+        item:[...initialCard, ...initialCard].map(card=>({...card, id:Math.random()})),
         score:0,
     },
     reducers:{
-        againGame:(state)=>{
-            state.item=state.item.sort(()=> Math.random() -0.5).map(card=>({...card, id: Math.random()}))
+        playAgain:(state)=>{
+            for(let i=0; i<state.item.length; i++){
+                if(state.item[i].matched===true){
+                    state.item[i].matched=false
+                }
+            }
+            state.item=state.item.sort(()=> Math.random() -0.5) //Shuffle cards using math.random
             state.score=0
         },
         moveScore:(state, action)=>{
@@ -37,4 +44,4 @@ const gameSlice=createSlice({
 
 })
 export default gameSlice.reducer 
-export const {againGame, moveScore, matchedCards}=gameSlice.actions
+export const {playAgain, moveScore, matchedCards}=gameSlice.actions
