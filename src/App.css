@@ -5,17 +5,39 @@ body{
   border: none;
   padding: 5% 15%;
   background: none;
-  margin:0 10% ;
+  margin: 0 auto;
+}
+.badge{
+  height: 45px;
+  width: 100px;
+  font-size: medium;
+  padding-top: 12px;
+  
+}
+.btn{
+font-weight: 700;
+color: rgb(37, 37, 37);
+margin-left: 6%;
 }
 .card .front{
   width: 100px;
   height: 100px;
-  
-  
+  transform: rotateY(90deg);
+  transition: all ease-in 0.2s;
 }
 .back{
   width: 100px;
   height: 100px;
   position: absolute;
+  transition: all ease-in 0.2s;
+  transition-delay: 0.2s;
  
+}
+.flipped .front{
+  transform: rotateY(0deg);
+  transition-delay: 0.2s;
+}
+.flipped .back{
+  transform: rotateY(90deg);
+  transition-delay: 0s;
 }
