@@ -1,18 +1,15 @@
 import {useEffect, useState} from 'react'
 import  Card  from '../card';
-import { againGame, moveScore, matchedCards } from '../../Redux/GameSlice/gameSlice';
+import { playAgain, moveScore, matchedCards } from '../../Redux/GameSlice/gameSlice';
 import {useSelector, useDispatch} from "react-redux"
 import {Container, Row, Button, Badge} from "react-bootstrap"
 
 function Game() {
     const cards=useSelector(state=>state.game.item) 
     const score=useSelector(state=>state.game.score) 
-    const [choiceOne, setChoiceOne]=useState(null);
-    const [choiceTwo, setChoiceTwo]=useState(null);
+    const [choiceOne, setChoiceOne]=useState(null); // the state for first choice card
+    const [choiceTwo, setChoiceTwo]=useState(null); // the state for second choice card
     const dispatch=useDispatch();
-
-    console.log(cards)
-    console.log(choiceOne)
 
     useEffect(()=>{
       
@@ -23,18 +20,18 @@ function Game() {
           reset()
         }
         else{
-          dispatch(moveScore(-10))
-          reset()
+          dispatch(moveScore(-10));
+          setTimeout(() => reset(),1000);// use setTimeout to extend the display time of the second card
         }
       }
     },[dispatch,choiceOne, choiceTwo])
 
     useEffect( ()=>{
-      dispatch(againGame())
+      dispatch(playAgain())
     },[dispatch])
 
   const handleClick=()=>{
-    dispatch(againGame())
+    dispatch(playAgain())
   }
 
   const handleChoice=(card)=>{
@@ -45,21 +42,21 @@ function Game() {
     setChoiceOne(null)
     setChoiceTwo(null)
   }
- 
+
   return (
     
     <Container >
-        <div className='d-flex justify-content-center mt-3'>
-          <Badge bg="dark">Score:{score}</Badge>
-          <Button className='btn-sm btn-warning fw-lg ms-5' onClick={handleClick} >Again Game</Button>
+        <div className='d-flex justify-content-center mt-5'>
+         <Badge bg="dark" className='badge' >Score: {score}</Badge>
+          <Button className='btn btn-warning ' onClick={handleClick} >Play Again</Button>
         </div>
         <div className='card'>
-          <Row xs={4}>
-            { cards.map((card, key)=>(
-            <Card key={key}
+          <Row xs={5}>
+            { cards.map((card)=>(
+            <Card key={card.id}
              card={card}
              handleChoice={handleChoice}
-             flipped={card.matched}
+             flipped={(choiceOne && choiceOne.id=== card.id) || (choiceTwo && choiceTwo.id===card.id) || card.matched}
              />
             ))
             }
